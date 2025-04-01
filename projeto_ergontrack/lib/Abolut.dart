@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+
+class Abolut extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFB4CEAA),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              "SOBRE",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 300),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildText("Ergontrack"),
+                _buildText("V 1.0.0_dev_0"),
+                _buildText("Desenvolvido por grupo-8"),
+              ],
+            ),
+            Spacer(),
+            BottomNavigation(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildText(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class BottomNavigation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(icon: Icon(Icons.home, size: 30), onPressed: () {}),
+          IconButton(icon: Icon(Icons.notifications, size: 30, color: Colors.red), onPressed: () {}),
+          IconButton(icon: Icon(Icons.rocket_launch, size: 30), onPressed: () {}),
+          IconButton(icon: Icon(Icons.settings, size: 30), onPressed: () {}),
+        ],
+      ),
+    );
+  }
+}
