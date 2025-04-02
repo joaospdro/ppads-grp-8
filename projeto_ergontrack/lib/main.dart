@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'relax_screen.dart'; // Importando a tela principal
-import 'AlarmSettingsScreen.dart';
+//import 'AlarmSettingsScreen.dart';
 //import 'ChangePasswordScreen.dart';
 //import 'CreateAccount.dart';
 //import 'RecoverPassword.dart';
 //import 'Abolut.dart';
+import 'ActivityHistoryScreen.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: AlarmSettingsScreen(), // Chamando a tela principal
+      home: ActivityHistoryScreen(), // Chamando a tela principal
     );
   }
 }
