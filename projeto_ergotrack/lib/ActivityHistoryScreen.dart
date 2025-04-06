@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'widgets/bottom_navigation.dart';
 
 class ActivityHistoryScreen extends StatefulWidget {
   @override
@@ -61,7 +62,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
             _buildTable(),
             _buildExportSection(),
             Spacer(),
-            BottomNavigation(),
+            const BottomNavigation(),
           ],
         ),
       ),
@@ -188,24 +189,6 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class BottomNavigation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(icon: Icon(Icons.home, size: 30), onPressed: () {}),
-          IconButton(icon: Icon(Icons.notifications, size: 30, color: Colors.red), onPressed: () {}),
-          IconButton(icon: Icon(Icons.rocket_launch, size: 30), onPressed: () {}),
-          IconButton(icon: Icon(Icons.settings, size: 30), onPressed: () {}),
-        ],
-      ),
     );
   }
 }

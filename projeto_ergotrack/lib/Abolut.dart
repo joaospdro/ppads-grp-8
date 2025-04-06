@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/bottom_navigation.dart';
 
 class Abolut extends StatelessWidget {
   @override
@@ -26,7 +27,7 @@ class Abolut extends StatelessWidget {
               ],
             ),
             Spacer(),
-            BottomNavigation(),
+            const BottomNavigation(),
           ],
         ),
       ),
@@ -40,24 +41,6 @@ class Abolut extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-class BottomNavigation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(icon: Icon(Icons.home, size: 30), onPressed: () {}),
-          IconButton(icon: Icon(Icons.notifications, size: 30, color: Colors.red), onPressed: () {}),
-          IconButton(icon: Icon(Icons.rocket_launch, size: 30), onPressed: () {}),
-          IconButton(icon: Icon(Icons.settings, size: 30), onPressed: () {}),
-        ],
       ),
     );
   }
