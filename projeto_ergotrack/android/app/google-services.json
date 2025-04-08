@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "184022585370",
+    "project_id": "ppads-grp-8-fire",
+    "storage_bucket": "ppads-grp-8-fire.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184022585370:android:bfc7255abab5b6b57541a3",
+        "android_client_info": {
+          "package_name": "com.example.projeto_ergotrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoPy5v96dD7-YUFPZHJ5K6IP5So3c0BHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

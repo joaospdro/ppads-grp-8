@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/bottom_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,7 +48,7 @@ class RelaxScreen extends StatelessWidget {
             RelaxButton(text: "Beber água"),
             RelaxButton(text: "Faça uma pausa"),
             Spacer(),
-            BottomNavigation(),
+            const BottomNavigation(),
           ],
         ),
       ),
@@ -78,36 +79,6 @@ class RelaxButton extends StatelessWidget {
           ),
           minimumSize: Size(double.infinity, 50),
         ),
-      ),
-    );
-  }
-}
-
-class BottomNavigation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            icon: Icon(Icons.home, size: 30),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.notifications, size: 30, color: Colors.red),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.rocket_launch, size: 30),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.settings, size: 30),
-            onPressed: () {},
-          ),
-        ],
       ),
     );
   }
