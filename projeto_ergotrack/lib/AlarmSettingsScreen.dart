@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto_ergotrack/services/notification_service.dart';
 import 'widgets/bottom_navigation.dart';
 import 'ActivityHistoryScreen.dart';
+import 'package:flutter/foundation.dart';
 
 class AlarmSettingsScreen extends StatefulWidget {
   final String notificationType;
@@ -43,6 +44,20 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
     }
   }
 
+  void _triggerTestNotification() async {
+    try {
+      await _notificationService.showInstantNotification(
+        999, // ID único para notificação de teste
+        'Teste de Notificação',
+        'Esta é uma notificação de teste do modo debug',
+      );
+    } catch (e) {
+      if (mounted) {
+        _showMessage('Erro ao disparar notificação: $e', isError: true);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +92,17 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
               ),
             ),
             Spacer(),
+            if (kDebugMode) Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ElevatedButton(
+                onPressed: _triggerTestNotification,
+                child: const Text('TESTAR NOTIFICAÇÃO (DEBUG)'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
