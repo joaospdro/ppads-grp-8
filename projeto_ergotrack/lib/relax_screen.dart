@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'widgets/bottom_navigation.dart';
+import 'AlarmSettingsScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -66,8 +67,13 @@ class RelaxButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 40),
       child: ElevatedButton.icon(
-        onPressed: () {},
-        icon: Icon(Icons.camera_alt, color: Colors.black),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AlarmSettingsScreen(notificationType: text)),
+          );
+        },
+        icon: Icon(Icons.calendar_today, color: Colors.black),
         label: Text(
           text,
           style: TextStyle(fontSize: 16, color: Colors.black),
