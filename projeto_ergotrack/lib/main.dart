@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:projeto_ergotrack/services/notification_service.dart';
 import 'firebase_options.dart';
 import 'ActivityHistoryScreen.dart';
 import 'Login_Screen.dart';
-import 'AlarmSettingsScreen.dart';
 import 'ChangePasswordScreen.dart';
 import 'RecoverPassword.dart';
 import 'CreateAccount.dart';
+import 'relax_screen.dart';
 import 'widgets/bottom_navigation.dart';
 
 class PlaceholderScreen extends StatelessWidget {
@@ -28,6 +29,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await NotificationService().initialize();
   await FirebaseAuth.instance.signOut();
   runApp(const MyApp());
 }
@@ -43,9 +45,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => AuthWrapper(),
+        '/relax': (context) => RelaxScreen(),
         '/activity': (context) => ActivityHistoryScreen(),
         '/login': (context) => LoginScreen(),
-        '/alarm': (context) => AlarmSettingsScreen(),
         '/settings': (context) => ChangePasswordScreen(),
         '/notifications': (context) => const PlaceholderScreen(title: 'Notificações'),
         '/recover': (context) => RecoverPassword(),

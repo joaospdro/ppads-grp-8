@@ -5,9 +5,9 @@ class BottomNavigation extends StatelessWidget {
   const BottomNavigation({Key? key, this.selectedIndex}) : super(key: key);
 
   static const List<Map<String, dynamic>> items = [
-    {'route': '/activity', 'icon': Icons.home, 'label': 'Home'},
-    {'route': '/notifications', 'icon': Icons.notifications, 'label': 'Notificações'},
-    {'route': '/alarm', 'icon': Icons.rocket_launch, 'label': 'Alarmes'},
+    {'route': '/', 'icon': Icons.home, 'label': 'Home'},
+    {'route': '/notifications', 'icon': Icons.notifications_active, 'label': 'Notificações'},
+    {'route': '/relax', 'icon': Icons.rocket_launch, 'label': 'Relaxar'},
     {'route': '/settings', 'icon': Icons.settings, 'label': 'Configurações'},
   ];
 
