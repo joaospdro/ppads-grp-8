@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB4CEAA),
+      backgroundColor: const Color(0xFFB4CEAA),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 40),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'E-mail',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -67,15 +67,25 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () async {
                 String email = _emailController.text;
                 String password = _passwordController.text;
+                
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                final navigator = Navigator.of(context);
+                
                 try {
                   await FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: email, password: password);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Login realizado com sucesso')),
+                  
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
+                    const SnackBar(content: Text('Login realizado com sucesso')),
                   );
-                  Navigator.pushReplacementNamed(context, '/activity');
+                  
+                  navigator.pushReplacementNamed('/activity');
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text('Erro no login: ${e.toString()}')),
                   );
                 }
@@ -90,7 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            // Botões extras (recuperar senha e criar conta) permanecem aqui
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/recover');
