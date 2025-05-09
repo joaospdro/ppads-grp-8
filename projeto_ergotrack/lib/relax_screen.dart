@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'widgets/bottom_navigation.dart';
-import 'AlarmSettingsScreen.dart';
+import 'alarm_settings_screen.dart';
 
 void main() {
   runApp(const MyApp());

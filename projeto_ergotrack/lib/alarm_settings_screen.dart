@@ -9,16 +9,19 @@ import 'package:flutter/foundation.dart';
 class AlarmSettingsScreen extends StatefulWidget {
   final String notificationType;
   
-  const AlarmSettingsScreen({required this.notificationType});
+  const AlarmSettingsScreen({
+    required this.notificationType, 
+    super.key
+  });
   
   @override
-  _AlarmSettingsScreenState createState() => _AlarmSettingsScreenState();
+  State<AlarmSettingsScreen> createState() => _AlarmSettingsScreenState();
 }
 
 class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
   List<bool> selectedDays = [false, true, false, true, false, true, false];
-  TimeOfDay startTime = TimeOfDay(hour: 7, minute: 30);
-  TimeOfDay endTime = TimeOfDay(hour: 17, minute: 0);
+  TimeOfDay startTime = const TimeOfDay(hour: 7, minute: 30);
+  TimeOfDay endTime = const TimeOfDay(hour: 17, minute: 0);
   bool _isSaving = false;
   final NotificationService _notificationService = NotificationService();
 
@@ -61,7 +64,7 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB4CEAA),
+      backgroundColor: const Color(0xFFB4CEAA),
       body: SafeArea(
         child: Column(
           children: [
@@ -80,40 +83,40 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 widget.notificationType,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             _buildSection("Frequência"),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Text(
                 "20 Minutos",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             if (kDebugMode) Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ElevatedButton(
-                onPressed: _triggerTestNotification,
-                child: const Text('TESTAR NOTIFICAÇÃO (DEBUG)'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                   backgroundColor: Colors.red,
                 ),
+                onPressed: _triggerTestNotification,
+                child: const Text('TESTAR NOTIFICAÇÃO (DEBUG)'),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
-                onPressed: _isSaving ? null : _saveSettings,
-                child: _isSaving 
-                    ? CircularProgressIndicator(color: Colors.white)
-                    : const Text('Salvar Configurações'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                   backgroundColor: Colors.blue.shade700,
                 ),
+                onPressed: _isSaving ? null : _saveSettings,
+                child: _isSaving 
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('Salvar Configurações'),
               ),
             ),
             const BottomNavigation(),
@@ -126,11 +129,11 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
   Widget _buildSection(String title) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       color: Colors.blue.shade700,
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
           color: Colors.white,
@@ -147,7 +150,7 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
       children: List.generate(7, (index) {
         return Column(
           children: [
-            Text(days[index], style: TextStyle(fontSize: 16)),
+            Text(days[index], style: const TextStyle(fontSize: 16)),
             Checkbox(
               value: selectedDays[index],
               onChanged: (bool? value) {
@@ -167,7 +170,7 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _buildTimeBox("Início", startTime, true),
-        Icon(Icons.access_time, size: 30),
+        const Icon(Icons.access_time, size: 30),
         _buildTimeBox("Término", endTime, false),
       ],
     );
@@ -178,16 +181,16 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
       onTap: () => _selectTime(context, isStart),
       child: Column(
         children: [
-          Text(label, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(
               "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}",
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ),
         ],
@@ -246,7 +249,8 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
           }
         }
       } catch (notifError) {
-        print('Erro ao agendar notificações: $notifError');
+        // Substituir print por log
+        debugPrint('Erro ao agendar notificações: $notifError');
         if (mounted) {
           _showMessage('Configurações salvas, mas as notificações podem ter horários aproximados devido a restrições do sistema.', isWarning: true);
         }
@@ -256,16 +260,17 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
         _showMessage('Configurações salvas!');
       }
       
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
       
       if (!mounted) return;
       
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => ActivityHistoryScreen()),
+        MaterialPageRoute(builder: (_) => const ActivityHistoryScreen()),
       );
     } catch (e) {
-      print('Erro completo ao salvar: $e');
+      // Substituir print por log
+      debugPrint('Erro completo ao salvar: $e');
       
       if (!mounted) return;
       
