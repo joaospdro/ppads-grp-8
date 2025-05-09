@@ -7,7 +7,7 @@ import 'activity_history_screen.dart';
 import 'Login_Screen.dart';
 import 'change_password_screen.dart';
 import 'RecoverPassword.dart';
-import 'CreateAccount.dart';
+import 'create_account.dart';
 import 'relax_screen.dart';
 import 'widgets/bottom_navigation.dart';
 

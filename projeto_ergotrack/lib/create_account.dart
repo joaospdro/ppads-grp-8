@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CreateAccount extends StatefulWidget {
+  const CreateAccount({super.key});
+
   @override
-  _CreateAccountState createState() => _CreateAccountState();
+  State<CreateAccount> createState() => _CreateAccountState();
 }
 
 class _CreateAccountState extends State<CreateAccount> {
@@ -14,12 +16,12 @@ class _CreateAccountState extends State<CreateAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB4CEAA),
+      backgroundColor: const Color(0xFFB4CEAA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -39,7 +41,7 @@ class _CreateAccountState extends State<CreateAccount> {
             const SizedBox(height: 40),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Digite seu e-mail',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -52,7 +54,7 @@ class _CreateAccountState extends State<CreateAccount> {
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Digitar senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -65,7 +67,7 @@ class _CreateAccountState extends State<CreateAccount> {
             TextField(
               controller: _confirmController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Confirma senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -79,20 +81,30 @@ class _CreateAccountState extends State<CreateAccount> {
               onPressed: () async {
                 if (_passwordController.text != _confirmController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('As senhas não coincidem')),
+                    const SnackBar(content: Text('As senhas não coincidem')),
                   );
                   return;
                 }
+                
+                final navigator = Navigator.of(context);
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                
                 try {
                   await FirebaseAuth.instance.createUserWithEmailAndPassword(
                       email: _emailController.text,
                       password: _passwordController.text);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Conta criada com sucesso')),
+                  
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
+                    const SnackBar(content: Text('Conta criada com sucesso')),
                   );
-                  Navigator.of(context).pop();
+                  
+                  navigator.pop();
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text('Erro: ${e.toString()}')),
                   );
                 }
