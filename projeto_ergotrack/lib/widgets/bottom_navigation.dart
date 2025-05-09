@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BottomNavigation extends StatelessWidget {
   final int? selectedIndex;
-  const BottomNavigation({Key? key, this.selectedIndex}) : super(key: key);
+  const BottomNavigation({super.key, this.selectedIndex});
 
   static const List<Map<String, dynamic>> items = [
     {'route': '/', 'icon': Icons.home, 'label': 'Home'},

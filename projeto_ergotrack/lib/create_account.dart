@@ -1,24 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'widgets/bottom_navigation.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
+class CreateAccount extends StatefulWidget {
+  const CreateAccount({super.key});
+
   @override
-  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
+  State<CreateAccount> createState() => _CreateAccountState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final TextEditingController _currentController = TextEditingController();
-  final TextEditingController _newController = TextEditingController();
+class _CreateAccountState extends State<CreateAccount> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB4CEAA),
+      backgroundColor: const Color(0xFFB4CEAA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -26,7 +31,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "TROCAR SENHA",
+              "CRIAR CONTA",
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -35,10 +40,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
             const SizedBox(height: 40),
             TextField(
-              controller: _currentController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Senha Atual',
+              controller: _emailController,
+              decoration: const InputDecoration(
+                labelText: 'Digite seu e-mail',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -48,10 +52,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
             const SizedBox(height: 20),
             TextField(
-              controller: _newController,
+              controller: _passwordController,
               obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Nova senha',
+              decoration: const InputDecoration(
+                labelText: 'Digitar senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -63,8 +67,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             TextField(
               controller: _confirmController,
               obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Confirma nova senha',
+              decoration: const InputDecoration(
+                labelText: 'Confirma senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -75,20 +79,32 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                if (_newController.text != _confirmController.text) {
+                if (_passwordController.text != _confirmController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('As novas senhas não coincidem')),
+                    const SnackBar(content: Text('As senhas não coincidem')),
                   );
                   return;
                 }
+                
+                final navigator = Navigator.of(context);
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                
                 try {
-                  await FirebaseAuth.instance.currentUser!
-                      .updatePassword(_newController.text);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Senha atualizada com sucesso')),
+                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: _emailController.text,
+                      password: _passwordController.text);
+                  
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
+                    const SnackBar(content: Text('Conta criada com sucesso')),
                   );
+                  
+                  navigator.pop();
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text('Erro: ${e.toString()}')),
                   );
                 }
@@ -102,10 +118,22 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 style: TextStyle(fontSize: 18),
               ),
             ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: Colors.red,
+                ),
+              ),
+            ),
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }

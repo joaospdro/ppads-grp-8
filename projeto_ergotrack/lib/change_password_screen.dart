@@ -1,27 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'widgets/bottom_navigation.dart';
 
-class CreateAccount extends StatefulWidget {
+class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
+
   @override
-  _CreateAccountState createState() => _CreateAccountState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _CreateAccountState extends State<CreateAccount> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  final TextEditingController _currentController = TextEditingController();
+  final TextEditingController _newController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB4CEAA),
+      backgroundColor: const Color(0xFFB4CEAA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -29,7 +28,7 @@ class _CreateAccountState extends State<CreateAccount> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "CRIAR CONTA",
+              "TROCAR SENHA",
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -38,9 +37,10 @@ class _CreateAccountState extends State<CreateAccount> {
             ),
             const SizedBox(height: 40),
             TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Digite seu e-mail',
+              controller: _currentController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Senha Atual',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -50,10 +50,10 @@ class _CreateAccountState extends State<CreateAccount> {
             ),
             const SizedBox(height: 20),
             TextField(
-              controller: _passwordController,
+              controller: _newController,
               obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Digitar senha',
+              decoration: const InputDecoration(
+                labelText: 'Nova senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -65,8 +65,8 @@ class _CreateAccountState extends State<CreateAccount> {
             TextField(
               controller: _confirmController,
               obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Confirma senha',
+              decoration: const InputDecoration(
+                labelText: 'Confirma nova senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -77,22 +77,29 @@ class _CreateAccountState extends State<CreateAccount> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                if (_passwordController.text != _confirmController.text) {
+                // Valide os inputs primeiro (operação síncrona)
+                if (_newController.text != _confirmController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('As senhas não coincidem')),
+                    const SnackBar(content: Text('As novas senhas não coincidem')),
                   );
                   return;
                 }
+                
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                
                 try {
-                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: _emailController.text,
-                      password: _passwordController.text);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Conta criada com sucesso')),
+                  await FirebaseAuth.instance.currentUser!
+                      .updatePassword(_newController.text);
+                  
+                  if (!mounted) return;
+                      
+                  scaffoldMessenger.showSnackBar(
+                    const SnackBar(content: Text('Senha atualizada com sucesso')),
                   );
-                  Navigator.of(context).pop();
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text('Erro: ${e.toString()}')),
                   );
                 }
@@ -106,22 +113,10 @@ class _CreateAccountState extends State<CreateAccount> {
                 style: TextStyle(fontSize: 18),
               ),
             ),
-            const SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'Cancelar',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: Colors.red,
-                ),
-              ),
-            ),
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }

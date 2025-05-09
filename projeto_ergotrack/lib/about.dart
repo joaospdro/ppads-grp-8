@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'widgets/bottom_navigation.dart';
 
-class Abolut extends StatelessWidget {
+class About extends StatelessWidget {
+  const About({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

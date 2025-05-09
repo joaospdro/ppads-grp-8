@@ -3,11 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projeto_ergotrack/services/notification_service.dart';
 import 'firebase_options.dart';
-import 'ActivityHistoryScreen.dart';
-import 'Login_Screen.dart';
-import 'ChangePasswordScreen.dart';
-import 'RecoverPassword.dart';
-import 'CreateAccount.dart';
+import 'activity_history_screen.dart';
+import 'login_screen.dart';
+import 'change_password_screen.dart';
+import 'recover_password.dart';
+import 'create_account.dart';
 import 'relax_screen.dart';
 import 'widgets/bottom_navigation.dart';
 
@@ -58,9 +58,11 @@ class MyApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+  
   @override
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;
-    return user != null ? ActivityHistoryScreen() : LoginScreen();
+    return user != null ? const ActivityHistoryScreen() : const LoginScreen();
   }
 }
