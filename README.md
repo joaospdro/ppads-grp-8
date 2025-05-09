@@ -1,5 +1,68 @@
 # Projeto de Prática Profissional em ADS
 
+## Pré-requisitos
+Certifique-se de que você possui os seguintes itens instalados em seu computador:
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (versão 3.7.2 ou superior)
+- [Dart SDK](https://dart.dev/get-dart)
+- [Android Studio](https://developer.android.com/studio) ou [Xcode](https://developer.apple.com/xcode/) para emuladores
+- Um dispositivo físico ou emulador configurado
+
+### Passos para executar a aplicação
+
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/joaospdro/ppads-grp-8.git
+   ```
+
+2. **Acesse o diretório do projeto**
+   ```bash
+   cd projeto_ergotrack
+   ```
+
+3. **Instale as dependências**
+   ```bash
+   flutter pub get
+   ```
+
+4. **Configure o Firebase**
+   - Certifique-se de que os arquivos de configuração do Firebase (`google-services.json` para Android e `GoogleService-Info.plist` para iOS) estão corretamente configurados no projeto.
+   - Para mais informações, consulte a [documentação oficial do Firebase](https://firebase.google.com/docs/flutter/setup).
+
+5. **Execute a aplicação**
+   - Para dispositivos Android:
+     ```bash
+     flutter run
+     ```
+   - Para dispositivos iOS:
+     ```bash
+     flutter run -d ios
+     ```
+
+6. **Acesse a aplicação**
+   Após a execução bem-sucedida, a aplicação será iniciada no dispositivo/emulador configurado.
+
+### Testes
+Para executar os testes automatizados, utilize:
+```bash
+flutter test
+```
+
+### Build para produção
+Para gerar uma versão de produção:
+- **Android**:
+  ```bash
+  flutter build apk
+  ```
+- **iOS**:
+  ```bash
+  flutter build ios
+  ```
+
+Os arquivos gerados estarão disponíveis no diretório `build`.
+
+### Observação
+Certifique-se de que todas as permissões necessárias (como notificações e acesso à internet) estão configuradas corretamente no arquivo `AndroidManifest.xml` (Android) ou `Info.plist` (iOS).
+
 ## 1. Diagrama de casos de uso
 
 ![image](https://github.com/user-attachments/assets/9c9ddec3-b1f8-4f6e-a022-a4a6c8ee336a)
