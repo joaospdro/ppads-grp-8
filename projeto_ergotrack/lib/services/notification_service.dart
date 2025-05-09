@@ -62,7 +62,7 @@ class NotificationService {
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       );
     } catch (e) {
-      print("Erro ao agendar notificação: $e");
+      debugPrint("Erro ao agendar notificação: $e");
       
       await showInstantNotification(id, title, body);
     }
