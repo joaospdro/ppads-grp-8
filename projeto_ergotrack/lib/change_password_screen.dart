@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'widgets/bottom_navigation.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
+
   @override
-  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
@@ -15,7 +17,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB4CEAA),
+      backgroundColor: const Color(0xFFB4CEAA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -37,7 +39,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             TextField(
               controller: _currentController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Senha Atual',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -50,7 +52,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             TextField(
               controller: _newController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nova senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -63,7 +65,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             TextField(
               controller: _confirmController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Confirma nova senha',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -75,20 +77,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
+                // Valide os inputs primeiro (operação síncrona)
                 if (_newController.text != _confirmController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('As novas senhas não coincidem')),
+                    const SnackBar(content: Text('As novas senhas não coincidem')),
                   );
                   return;
                 }
+                
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                
                 try {
                   await FirebaseAuth.instance.currentUser!
                       .updatePassword(_newController.text);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Senha atualizada com sucesso')),
+                  
+                  if (!mounted) return;
+                      
+                  scaffoldMessenger.showSnackBar(
+                    const SnackBar(content: Text('Senha atualizada com sucesso')),
                   );
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text('Erro: ${e.toString()}')),
                   );
                 }

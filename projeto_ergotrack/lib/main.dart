@@ -5,7 +5,7 @@ import 'package:projeto_ergotrack/services/notification_service.dart';
 import 'firebase_options.dart';
 import 'activity_history_screen.dart';
 import 'Login_Screen.dart';
-import 'ChangePasswordScreen.dart';
+import 'change_password_screen.dart';
 import 'RecoverPassword.dart';
 import 'CreateAccount.dart';
 import 'relax_screen.dart';
