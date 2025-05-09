@@ -40,7 +40,7 @@ class ExportService {
                         _buildPdfCell(entry.value['missed'].toString()),
                       ]
                     );
-                  }).toList(),
+                  }),
                 ]
               ),
             ]
@@ -88,6 +88,7 @@ class ExportService {
   }
   
   Future<void> shareFile(File file) async {
-    await Share.shareFiles([file.path], text: 'Relatório de atividades ErgoTrack');
+    final xfile = XFile(file.path);
+    await Share.shareXFiles([xfile]);
   }
 }
