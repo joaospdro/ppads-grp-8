@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'widgets/bottom_navigation.dart';
+import 'services/activity_service.dart';
+import 'services/export_service.dart';
 
 class ActivityHistoryScreen extends StatefulWidget {
   @override
@@ -11,11 +13,51 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
   DateTime selectedDate = DateTime.now();
   DateTime fromDate = DateTime.now().subtract(Duration(days: 7));
   DateTime toDate = DateTime.now();
+  
+  final ActivityService _activityService = ActivityService();
+  final ExportService _exportService = ExportService();
+  
+  Map<String, Map<String, int>> _stats = {
+    'Postura': {'completed': 0, 'missed': 0},
+    'Alongamento': {'completed': 0, 'missed': 0},
+    'Água': {'completed': 0, 'missed': 0},
+    'Pausa': {'completed': 0, 'missed': 0},
+  };
+  
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStats();
+  }
+
+  Future<void> _loadStats() async {
+    setState(() {
+      _isLoading = true;
+    });
+    
+    try {
+      final stats = await _activityService.getActivityStatsByDate(selectedDate);
+      setState(() {
+        _stats = stats;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao carregar dados: ${e.toString()}")),
+      );
+    }
+  }
 
   void _changeDate(int days) {
     setState(() {
       selectedDate = selectedDate.add(Duration(days: days));
     });
+    _loadStats();
   }
 
   Future<void> _selectDate(BuildContext context, bool isFromDate) async {
@@ -47,6 +89,35 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
       setState(() {
         selectedDate = picked;
       });
+      _loadStats();
+    }
+  }
+  
+  Future<void> _exportData(bool isPdf) async {
+    setState(() {
+      _isLoading = true;
+    });
+    
+    try {
+      final stats = await _activityService.getActivityStatsByDateRange(fromDate, toDate);
+      
+      final file = isPdf 
+        ? await _exportService.exportToPdf(stats, fromDate, toDate)
+        : await _exportService.exportToCsv(stats);
+        
+      await _exportService.shareFile(file);
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Relatório gerado com sucesso!")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao exportar dados: ${e.toString()}")),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -55,16 +126,18 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFB4CEAA),
       body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            _buildDateSelector(),
-            _buildTable(),
-            _buildExportSection(),
-            Spacer(),
-            const BottomNavigation(),
-          ],
-        ),
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                children: [
+                  _buildHeader(),
+                  _buildDateSelector(),
+                  _buildTable(),
+                  _buildExportSection(),
+                  Spacer(),
+                  const BottomNavigation(),
+                ],
+              ),
       ),
     );
   }
@@ -116,10 +189,11 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
         },
         children: [
           _buildTableRow("Seguimento", "✔", "✖", isHeader: true),
-          _buildTableRow("Postura", "4", "2"),
-          _buildTableRow("Alongamento", "3", "5"),
-          _buildTableRow("Água", "7", "1"),
-          _buildTableRow("Pausa", "2", "1"),
+          ..._stats.entries.map((entry) => _buildTableRow(
+            entry.key, 
+            entry.value['completed'].toString(), 
+            entry.value['missed'].toString()
+          )).toList(),
         ],
       ),
     );
@@ -161,8 +235,32 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildDatePicker("Dê", fromDate, true),
+              _buildDatePicker("De", fromDate, true),
               _buildDatePicker("Até", toDate, false),
+            ],
+          ),
+          SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton.icon(
+                icon: Icon(Icons.picture_as_pdf),
+                label: Text("PDF"),
+                onPressed: () => _exportData(true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+              ElevatedButton.icon(
+                icon: Icon(Icons.table_chart),
+                label: Text("CSV"),
+                onPressed: () => _exportData(false),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
