@@ -13,42 +13,44 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RelaxScreen(),
+      home: const RelaxScreen(),
     );
   }
 }
 
 class RelaxScreen extends StatelessWidget {
+  const RelaxScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB4CEAA),
+      backgroundColor: const Color(0xFFB4CEAA),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            Icon(Icons.account_circle, size: 50, color: Colors.black),
+            const Icon(Icons.account_circle, size: 50, color: Colors.black),
             const SizedBox(height: 20),
-            Icon(Icons.self_improvement, size: 80, color: Colors.black),
+            const Icon(Icons.self_improvement, size: 80, color: Colors.black),
             const SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: Colors.yellow.shade200,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Text(
+              child: const Text(
                 "Esse momento é seu!",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 20),
-            RelaxButton(text: "Ajustar postura"),
-            RelaxButton(text: "Alongamento"),
-            RelaxButton(text: "Beber água"),
-            RelaxButton(text: "Faça uma pausa"),
-            Spacer(),
+            const RelaxButton(text: "Ajustar postura"),
+            const RelaxButton(text: "Alongamento"),
+            const RelaxButton(text: "Beber água"),
+            const RelaxButton(text: "Faça uma pausa"),
+            const Spacer(),
             const BottomNavigation(),
           ],
         ),
@@ -60,7 +62,7 @@ class RelaxScreen extends StatelessWidget {
 class RelaxButton extends StatelessWidget {
   final String text;
 
-  const RelaxButton({required this.text});
+  const RelaxButton({required this.text, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,17 +75,17 @@ class RelaxButton extends StatelessWidget {
             MaterialPageRoute(builder: (context) => AlarmSettingsScreen(notificationType: text)),
           );
         },
-        icon: Icon(Icons.calendar_today, color: Colors.black),
+        icon: const Icon(Icons.calendar_today, color: Colors.black),
         label: Text(
           text,
-          style: TextStyle(fontSize: 16, color: Colors.black),
+          style: const TextStyle(fontSize: 16, color: Colors.black),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          minimumSize: Size(double.infinity, 50),
+          minimumSize: const Size(double.infinity, 50),
         ),
       ),
     );
