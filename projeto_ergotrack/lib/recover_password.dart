@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RecoverPassword extends StatefulWidget {
+  const RecoverPassword({super.key});
+
   @override
-  _RecoverPasswordState createState() => _RecoverPasswordState();
+  State<RecoverPassword> createState() => _RecoverPasswordState();
 }
 
 class _RecoverPasswordState extends State<RecoverPassword> {
@@ -12,12 +14,12 @@ class _RecoverPasswordState extends State<RecoverPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB4CEAA),
+      backgroundColor: const Color(0xFFB4CEAA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -37,7 +39,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
             const SizedBox(height: 40),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Digite seu e-mail',
                 labelStyle: TextStyle(color: Colors.teal),
                 border: OutlineInputBorder(),
@@ -49,14 +51,21 @@ class _RecoverPasswordState extends State<RecoverPassword> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                
                 try {
                   await FirebaseAuth.instance.sendPasswordResetEmail(
                       email: _emailController.text);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('E-mail de recuperação enviado')),
+                  
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
+                    const SnackBar(content: Text('E-mail de recuperação enviado')),
                   );
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  if (!mounted) return;
+                  
+                  scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text('Erro: ${e.toString()}')),
                   );
                 }

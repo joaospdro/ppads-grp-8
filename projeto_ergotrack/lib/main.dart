@@ -6,7 +6,7 @@ import 'firebase_options.dart';
 import 'activity_history_screen.dart';
 import 'login_screen.dart';
 import 'change_password_screen.dart';
-import 'RecoverPassword.dart';
+import 'recover_password.dart';
 import 'create_account.dart';
 import 'relax_screen.dart';
 import 'widgets/bottom_navigation.dart';
