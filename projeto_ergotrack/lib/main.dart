@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projeto_ergotrack/services/notification_service.dart';
 import 'firebase_options.dart';
-import 'ActivityHistoryScreen.dart';
+import 'activity_history_screen.dart';
 import 'Login_Screen.dart';
 import 'ChangePasswordScreen.dart';
 import 'RecoverPassword.dart';

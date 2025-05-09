@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto_ergotrack/services/notification_service.dart';
 import 'widgets/bottom_navigation.dart';
-import 'ActivityHistoryScreen.dart';
+import 'activity_history_screen.dart';
 import 'package:flutter/foundation.dart';
 
 class AlarmSettingsScreen extends StatefulWidget {
