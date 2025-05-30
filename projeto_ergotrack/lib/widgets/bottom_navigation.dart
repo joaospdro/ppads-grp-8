@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../activity_history_screen.dart';
 import '../relax_screen.dart';
 import '../change_password_screen.dart';
-import '../main.dart';
+import '../notifications_screen.dart';
 
 class BottomNavigation extends StatelessWidget {
   final int selectedIndex;
@@ -60,7 +60,7 @@ class BottomNavigation extends StatelessWidget {
       case 0:
         return const ActivityHistoryScreen();
       case 1:
-        return const PlaceholderScreen(title: 'Notificações');
+        return const NotificationsScreen();
       case 2:
         return const RelaxScreen();
       case 3:

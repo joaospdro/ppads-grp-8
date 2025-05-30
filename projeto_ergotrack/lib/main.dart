@@ -10,6 +10,7 @@ import 'recover_password.dart';
 import 'create_account.dart';
 import 'relax_screen.dart';
 import 'widgets/bottom_navigation.dart';
+import 'notifications_screen.dart';
 
 class PlaceholderScreen extends StatelessWidget {
   final String title;
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/activity': (context) => ActivityHistoryScreen(),
         '/login': (context) => LoginScreen(),
         '/settings': (context) => ChangePasswordScreen(),
-        '/notifications': (context) => const PlaceholderScreen(title: 'Notificações'),
+        '/notifications': (context) => const NotificationsScreen(),
         '/recover': (context) => RecoverPassword(),
         '/create': (context) => CreateAccount(),
       },

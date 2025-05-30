@@ -241,6 +241,7 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
 
       await _notificationService.cancelAllNotifications();
 
+      // Save alarmSettings as before
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -252,6 +253,47 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
               'notificationType': widget.notificationType
             }
           }, SetOptions(merge: true));
+
+      // --- NEW: Save/update reminders array for NotificationsScreen ---
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      List<dynamic> reminders = [];
+      if (doc.exists && doc.data() != null && doc.data()!.containsKey('reminders')) {
+        reminders = List.from(doc['reminders']);
+      }
+      // Normalize type
+      String type = widget.notificationType;
+      final validTypes = ['Postura', 'Alongamento', 'Água', 'Pausa'];
+      if (type.toLowerCase().contains('postura')) {
+        type = 'Postura';
+      } else if (type.toLowerCase().contains('along')) {
+        type = 'Alongamento';
+      } else if (type.toLowerCase().contains('água') || type.toLowerCase().contains('agua')) {
+        type = 'Água';
+      } else if (type.toLowerCase().contains('pausa')) {
+        type = 'Pausa';
+      } else if (!validTypes.contains(type)) {
+        type = 'Pausa';
+      }
+      // Build reminder object
+      final reminderObj = {
+        'type': type,
+        'days': selectedDays,
+        'startTime': {'hour': startTime.hour, 'minute': startTime.minute},
+        'endTime': {'hour': endTime.hour, 'minute': endTime.minute},
+        'enabled': true,
+      };
+      // Update or add
+      int idx = reminders.indexWhere((r) => r['type'] == type);
+      if (idx >= 0) {
+        reminders[idx] = reminderObj;
+      } else {
+        reminders.add(reminderObj);
+      }
+      await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .set({'reminders': reminders}, SetOptions(merge: true));
+      // --- END NEW ---
 
       final now = DateTime.now();
       
@@ -288,7 +330,6 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
       if (mounted) {
         _showMessage('Configurações salvas!');
       }
-      
       await Future.delayed(const Duration(seconds: 2));
       
       if (!mounted) return;
