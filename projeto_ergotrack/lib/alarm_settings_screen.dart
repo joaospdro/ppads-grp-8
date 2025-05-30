@@ -238,6 +238,8 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
               title: widget.notificationType,
               body: 'Lembre-se de fazer uma pausa e se alongar',
               scheduledDate: nextDate,
+              activityId: '${FirebaseAuth.instance.currentUser?.uid}_${widget.notificationType}_$i',
+              activityType: widget.notificationType,
             );
             scheduledDaysCount++;
           }
