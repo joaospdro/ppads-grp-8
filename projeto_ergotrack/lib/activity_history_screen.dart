@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'widgets/bottom_navigation.dart';
 import 'services/activity_service.dart';
 import 'services/export_service.dart';
+import 'chart_screen.dart'; // Importa a tela do gráfico
 
 class ActivityHistoryScreen extends StatefulWidget {
   const ActivityHistoryScreen({super.key});
@@ -245,6 +246,37 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
+          // Botão de Gráficos com o mesmo estilo do cabeçalho "Exportar dados"
+          Container(
+            padding: const EdgeInsets.all(8),
+            color: Colors.blue[700],
+            child: InkWell(
+              onTap: () {
+                int totalCompleted = 0;
+                int totalMissed = 0;
+                _stats.forEach((_, values) {
+                  totalCompleted += values['completed'] ?? 0;
+                  totalMissed += values['missed'] ?? 0;
+                });
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => UsageStatsChartScreen(
+                      stats: {'completed': totalCompleted, 'missed': totalMissed},
+                    ),
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.bar_chart, color: Colors.white),
+                  SizedBox(width: 8),
+                  Text("Gráficos", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.all(8),
             color: Colors.blue[700],

@@ -49,10 +49,28 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
 
   void _triggerTestNotification() async {
     try {
+      final user = FirebaseAuth.instance.currentUser;
+      // Corrige o tipo para um dos segmentos válidos
+      final validTypes = ['Postura', 'Alongamento', 'Água', 'Pausa'];
+      String activityType = widget.notificationType;
+      // Normaliza para os segmentos válidos
+      if (activityType.toLowerCase().contains('postura')) {
+        activityType = 'Postura';
+      } else if (activityType.toLowerCase().contains('along')) {
+        activityType = 'Alongamento';
+      } else if (activityType.toLowerCase().contains('água') || activityType.toLowerCase().contains('agua')) {
+        activityType = 'Água';
+      } else if (activityType.toLowerCase().contains('pausa')) {
+        activityType = 'Pausa';
+      } else if (!validTypes.contains(activityType)) {
+        activityType = 'Pausa'; // fallback
+      }
+      final payload = user != null ? 'debug_${user.uid}|$activityType' : null;
       await _notificationService.showInstantNotification(
         999, // ID único para notificação de teste
         'Teste de Notificação',
         'Esta é uma notificação de teste do modo debug',
+        payload: payload,
       );
     } catch (e) {
       if (mounted) {
@@ -65,6 +83,15 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFB4CEAA),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+          tooltip: 'Voltar',
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
