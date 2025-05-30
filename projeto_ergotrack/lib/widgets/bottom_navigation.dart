@@ -17,8 +17,9 @@ class BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int safeIndex = (selectedIndex >= 0 && selectedIndex < items.length) ? selectedIndex : 0;
     return BottomNavigationBar(
-      currentIndex: selectedIndex,
+      currentIndex: safeIndex,
       backgroundColor: Colors.transparent,
       elevation: 0,
       type: BottomNavigationBarType.fixed,
