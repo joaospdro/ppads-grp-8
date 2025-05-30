@@ -29,7 +29,7 @@ class About extends StatelessWidget {
               ],
             ),
             Spacer(),
-            const BottomNavigation(),
+            BottomNavigation(selectedIndex: 0),
           ],
         ),
       ),

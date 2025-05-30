@@ -51,7 +51,7 @@ class RelaxScreen extends StatelessWidget {
             const RelaxButton(text: "Beber água"),
             const RelaxButton(text: "Faça uma pausa"),
             const Spacer(),
-            const BottomNavigation(),
+            BottomNavigation(selectedIndex: 2),
           ],
         ),
       ),

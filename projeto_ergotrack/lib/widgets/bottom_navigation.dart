@@ -5,8 +5,8 @@ import '../change_password_screen.dart';
 import '../main.dart';
 
 class BottomNavigation extends StatelessWidget {
-  final int? selectedIndex;
-  const BottomNavigation({super.key, this.selectedIndex});
+  final int selectedIndex;
+  const BottomNavigation({super.key, required this.selectedIndex});
 
   static const List<Map<String, dynamic>> items = [
     {'route': '/', 'icon': Icons.home, 'label': 'Home'},
@@ -17,24 +17,19 @@ class BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentRoute = ModalRoute.of(context)?.settings.name;
-    final currentIndex = currentRoute != null
-        ? items.indexWhere((item) => item['route'] == currentRoute)
-        : (selectedIndex ?? 0);
     return BottomNavigationBar(
-      currentIndex: currentIndex < 0 ? 0 : currentIndex,
+      currentIndex: selectedIndex,
       backgroundColor: Colors.transparent,
       elevation: 0,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: false,
       showUnselectedLabels: false,
       onTap: (index) {
-        final route = items[index]['route'];
-        if (route != currentRoute) {
+        if (index != selectedIndex) {
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  _getScreenForRoute(route!),
+                  _getScreenForRoute(index),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 return FadeTransition(
                   opacity: animation,
@@ -46,12 +41,10 @@ class BottomNavigation extends StatelessWidget {
           );
         }
       },
-      items: items.map((item) {
-        final index = items.indexOf(item);
-        final isSelected = currentRoute != null
-            ? (item['route'] == currentRoute)
-            : (index == (selectedIndex ?? 0));
-        final iconColor = isSelected ? Colors.red : Colors.black;
+      items: items.asMap().entries.map((entry) {
+        final index = entry.key;
+        final item = entry.value;
+        final iconColor = index == selectedIndex ? Colors.red : Colors.black;
         return BottomNavigationBarItem(
           icon: Icon(item['icon'], size: 30, color: iconColor),
           label: item['label'],
@@ -61,15 +54,15 @@ class BottomNavigation extends StatelessWidget {
     );
   }
 
-  Widget _getScreenForRoute(String route) {
-    switch (route) {
-      case '/':
+  Widget _getScreenForRoute(int index) {
+    switch (index) {
+      case 0:
         return const ActivityHistoryScreen();
-      case '/notifications':
+      case 1:
         return const PlaceholderScreen(title: 'Notificações');
-      case '/relax':
+      case 2:
         return const RelaxScreen();
-      case '/settings':
+      case 3:
         return const ChangePasswordScreen();
       default:
         return const ActivityHistoryScreen();

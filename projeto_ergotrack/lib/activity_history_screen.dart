@@ -155,7 +155,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
                   _buildTable(),
                   _buildExportSection(),
                   const Spacer(),
-                  const BottomNavigation(),
+                  const BottomNavigation(selectedIndex: 0),
                 ],
               ),
       ),

@@ -119,7 +119,7 @@ class _AlarmSettingsScreenState extends State<AlarmSettingsScreen> {
                     : const Text('Salvar Configurações'),
               ),
             ),
-            const BottomNavigation(),
+            BottomNavigation(selectedIndex: -1),
           ],
         ),
       ),
